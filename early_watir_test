@@ -1,0 +1,24 @@
+def initiate
+  require 'watir'
+  @browser = Watir::Browser.new :chrome
+end
+
+def login_test
+  @browser.goto('https://www.saucedemo.com')
+  @browser.text_field(id: 'user-name').set('standard_user')
+  @browser.text_field(id: 'password').set('secret_sauce')
+  @browser.button(value: 'LOGIN').click
+end
+
+def logout_test
+  @browser.button(text: "Open Menu").click
+  @browser.link(id: 'logout_sidebar_link').click
+end
+
+def full_suite
+  initiate
+  login_test
+  logout_test
+end
+
+full_suite
