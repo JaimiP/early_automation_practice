@@ -1,0 +1,84 @@
+def initiate
+  require 'selenium-webdriver'
+  @browser = Selenium::WebDriver.for :chrome
+ if @browser.current_url == "data:,"
+   puts "Initiation Test Successful"
+ else
+   puts "Initiation Test Failed"
+ end
+end
+
+def login_test
+  @browser.get "https://www.saucedemo.com"
+  @browser.find_element(:id, 'user-name').send_keys('standard_user')
+  @browser.find_element(:id, 'password').send_keys('secret_sauce')
+  @browser.find_element(:class, "btn_action").click
+  if @browser.current_url == "https://www.saucedemo.com/inventory.html"
+    puts "Login Test Successful"
+  else
+    puts "Login Test Failed"
+  end
+end
+
+def logout_test
+  @browser.find_element(:class, 'bm-burger-button').click
+  @browser.find_element(:id, 'logout_sidebar_link').click
+  if @browser.current_url == "https://www.saucedemo.com/index.html"
+    puts "Logout Test Successful"
+  else
+    puts "Logout Test Failed"
+  end
+end
+
+def add_to_cart
+  @browser.get "https://www.saucedemo.com/inventory.html"
+  @browser.find_element(:xpath, "//*[@id='inventory_container']/div/div[6]/div[3]/button").click
+  if @browser.find_element(:xpath, "//*[@id='inventory_container']/div/div[6]/div[3]/button").displayed?
+    puts "Add To Cart Test Successful"
+  else
+    puts "Add To Cart Test Failed"
+  end
+end
+
+def navigate_to_cart
+  @browser.get "https://www.saucedemo.com/cart.html"
+  if @browser.current_url == "https://www.saucedemo.com/cart.html"
+    puts "Navigate to cart Successful"
+  else
+    puts "Navigate to cart Failed"
+  end
+end
+
+def checkout_step_1test
+  @browser.find_element(:link_text,'CHECKOUT').click
+  @browser.find_element(:id, 'first-name').send_keys('Standard')
+  @browser.find_element(:id, 'last-name').send_keys('User')
+  @browser.find_element(:id, 'postal-code').send_keys('84101')
+  @browser.find_element(:xpath, "//*[@id='checkout_info_container']/div/form/div[2]/input" ).click
+  if @browser.current_url == "https://www.saucedemo.com/checkout-step-two.html"
+    puts "Checkout Step 1 Successful"
+  else
+    puts "Checkout Step 1 Failed"
+  end
+end
+
+def checkout_step_2test
+  @browser.find_element(:xpath, "//*[@id='checkout_summary_container']/div/div[2]/div[8]/a[2]").click
+  if @browser.current_url == "https://www.saucedemo.com/checkout-complete.html"
+    puts "Checkout Step 2 Successful"
+  else
+    puts "Checkout Step 2 Failed"
+  end
+end
+
+def full_suite
+  initiate
+  login_test
+  add_to_cart
+  navigate_to_cart
+  checkout_step_1test
+  checkout_step_2test
+  logout_test
+end
+
+full_suite
